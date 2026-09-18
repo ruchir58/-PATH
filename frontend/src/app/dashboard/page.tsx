@@ -12,9 +12,9 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const latestRes = await axios.get(`http://localhost:8005/datasets/latest`);
+        const latestRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/latest`);
         const datasetId = latestRes.data.id;
-        const res = await axios.get(`http://localhost:8005/datasets/${datasetId}/dashboard-summary`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${datasetId}/dashboard-summary`);
         setSummary(res.data);
       } catch (err) {
         console.error("Failed to load dashboard summary", err);

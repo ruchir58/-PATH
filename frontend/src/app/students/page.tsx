@@ -16,10 +16,10 @@ export default function StudentsPage() {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const latestRes = await axios.get(`http://localhost:8005/datasets/latest`);
+      const latestRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/latest`);
       const dsId = latestRes.data.id;
       setDatasetId(dsId);
-      const res = await axios.get(`http://localhost:8005/datasets/${dsId}/students`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${dsId}/students`, {
         params: { search, risk_level: riskFilter }
       });
       setStudents(res.data.items);
@@ -35,11 +35,11 @@ export default function StudentsPage() {
   }, [search, riskFilter]);
 
   const handleExportCSV = () => {
-    if (datasetId) window.open(`http://localhost:8005/datasets/${datasetId}/export/csv?risk_level=${riskFilter}`, "_blank");
+    if (datasetId) window.open(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${datasetId}/export/csv?risk_level=${riskFilter}`, "_blank");
   };
 
   const handleExportPDF = () => {
-    if (datasetId) window.open(`http://localhost:8005/datasets/${datasetId}/export/pdf?risk_level=${riskFilter}`, "_blank");
+    if (datasetId) window.open(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${datasetId}/export/pdf?risk_level=${riskFilter}`, "_blank");
   };
 
   return (

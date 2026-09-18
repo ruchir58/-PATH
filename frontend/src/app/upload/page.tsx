@@ -26,12 +26,12 @@ export default function UploadPage() {
 
     try {
       // 1. Upload
-      const res = await axios.post("http://localhost:8005/datasets/upload", formData);
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/upload`, formData);
       const dsId = res.data.id;
       setDatasetId(dsId);
       
       // 2. Inspect
-      const reportRes = await axios.get(`http://localhost:8005/datasets/${dsId}/inspect`);
+      const reportRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${dsId}/inspect`);
       const reportData = reportRes.data;
       setReport(reportData);
       
@@ -50,12 +50,12 @@ export default function UploadPage() {
       setTargetCol(target);
       
       // 4. Auto-clean and Train
-      await axios.post(`http://localhost:8005/datasets/${dsId}/clean`);
-      const trainRes = await axios.post(`http://localhost:8005/datasets/${dsId}/train`, { target_col: target });
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${dsId}/clean`);
+      const trainRes = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${dsId}/train`, { target_col: target });
       setTrainingMetrics(trainRes.data);
       
       // 5. Predict
-      await axios.post(`http://localhost:8005/datasets/${dsId}/predict`);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${dsId}/predict`);
       
     } catch (err: any) {
       console.error(err);

@@ -11,9 +11,9 @@ export default function AnalyticsPage() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const latestRes = await axios.get(`http://localhost:8005/datasets/latest`);
+        const latestRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/latest`);
         const datasetId = latestRes.data.id;
-        const res = await axios.get(`http://localhost:8005/datasets/${datasetId}/class-analytics`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${datasetId}/class-analytics`);
         setAnalytics(res.data);
       } catch (err) {
         console.error(err);

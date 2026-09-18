@@ -22,10 +22,10 @@ export default function StudentProfilePage() {
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const latestRes = await axios.get(`http://localhost:8005/datasets/latest`);
+        const latestRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/latest`);
         const dsId = latestRes.data.id;
         setDatasetId(dsId);
-        const res = await axios.get(`http://localhost:8005/datasets/${dsId}/students/${studentId}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${dsId}/students/${studentId}`);
         setStudent(res.data);
         setSimAttendance(res.data.attendance || 0);
         setSimScore(res.data.average_score || 0);
@@ -45,7 +45,7 @@ export default function StudentProfilePage() {
         attendance: simAttendance,
         average_score: simScore
       };
-      const res = await axios.post(`http://localhost:8005/datasets/${datasetId}/students/${studentId}/what-if`, overrides);
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${datasetId}/students/${studentId}/what-if`, overrides);
       setSimResult(res.data);
     } catch (err) {
       console.error(err);
@@ -56,7 +56,7 @@ export default function StudentProfilePage() {
 
   const handleMarkReviewed = async () => {
     try {
-      await axios.post(`http://localhost:8005/datasets/${datasetId}/students/${studentId}/review`);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005'}/datasets/${datasetId}/students/${studentId}/review`);
       setStudent({ ...student, review_status: "reviewed" });
     } catch (err) {
       console.error(err);
