@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, UploadCloud, Users, BarChart3, Settings } from "lucide-react";
+import { LayoutDashboard, UploadCloud, Users, BarChart3 } from "lucide-react";
 import clsx from "clsx";
 
 const navItems = [
@@ -43,13 +43,6 @@ export default function Sidebar() {
           );
         })}
       </nav>
-
-      <div className="p-4 border-t border-[#D5C6AF]">
-        <button className="flex items-center space-x-3 px-4 py-3 rounded-xl w-full hover:bg-[#D5C6AF] hover:text-[#4A3B32] transition-colors duration-200">
-          <Settings size={20} />
-          <span className="font-medium">Settings</span>
-        </button>
-      </div>
     </aside>
   );
 }
