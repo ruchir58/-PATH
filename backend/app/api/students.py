@@ -100,7 +100,7 @@ def what_if_analysis(student_id: int, overrides: dict = Body(...), db: Session =
     if 'average_score' in overrides:
         val = float(overrides['average_score'])
         numeric_cols = df_raw.select_dtypes(include=['number']).columns
-        marks_cols = [c for c in numeric_cols if any(kw in c for kw in ['quiz', 'assignment', 'lab', 'score', 'mark', 'prior', 'cgpa', 'gpa']) and c != 'average_score']
+        marks_cols = [c for c in numeric_cols if any(kw in c.lower() for kw in ['quiz', 'assignment', 'lab', 'exam', 'test', 'score', 'mark']) and 'cgpa' not in c.lower() and 'gpa' not in c.lower() and c != 'average_score']
         for c in marks_cols:
             df_raw[c] = val
             

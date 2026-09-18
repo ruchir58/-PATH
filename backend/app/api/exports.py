@@ -16,8 +16,8 @@ REPORTS_DIR = "reports"
 @router.get("/{dataset_id}/export/csv")
 def export_csv(dataset_id: int, risk_level: str = None, class_name: str = None, db: Session = Depends(get_db)):
     query = db.query(Student).filter(Student.dataset_id == dataset_id)
-    if risk_level:
-        query = query.filter(Student.risk_level == risk_level)
+    if risk_level and risk_level != "All Risk Levels" and risk_level.lower() != "all":
+        query = query.filter(Student.risk_level == risk_level.lower())
     if class_name:
         query = query.filter(Student.class_name == class_name)
         
@@ -40,6 +40,7 @@ def export_csv(dataset_id: int, risk_level: str = None, class_name: str = None, 
         }
         data.append(row)
         
+    os.makedirs(REPORTS_DIR, exist_ok=True)
     df = pd.DataFrame(data)
     filepath = os.path.join(REPORTS_DIR, f"export_dataset_{dataset_id}.csv")
     df.to_csv(filepath, index=False)
@@ -49,8 +50,8 @@ def export_csv(dataset_id: int, risk_level: str = None, class_name: str = None, 
 @router.get("/{dataset_id}/export/pdf")
 def export_pdf(dataset_id: int, risk_level: str = None, class_name: str = None, db: Session = Depends(get_db)):
     query = db.query(Student).filter(Student.dataset_id == dataset_id)
-    if risk_level:
-        query = query.filter(Student.risk_level == risk_level)
+    if risk_level and risk_level != "All Risk Levels" and risk_level.lower() != "all":
+        query = query.filter(Student.risk_level == risk_level.lower())
     if class_name:
         query = query.filter(Student.class_name == class_name)
         
@@ -58,6 +59,7 @@ def export_pdf(dataset_id: int, risk_level: str = None, class_name: str = None, 
     if not students:
         raise HTTPException(status_code=404, detail="No students found for export")
         
+    os.makedirs(REPORTS_DIR, exist_ok=True)
     filepath = os.path.join(REPORTS_DIR, f"export_dataset_{dataset_id}.pdf")
     doc = SimpleDocTemplate(filepath, pagesize=letter)
     elements = []
